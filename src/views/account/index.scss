@@ -16,27 +16,3 @@
   font-size: 16px;
   color: white;
 }
-
-// 滑动验证码样式
-.login-captcha{
-  width: 100%;
-  background-color: white;  
-  border-radius: 4px;
-  display: flex;
-  // 滑动验证码图标
-  i {
-    flex:1;
-    height: 100%;
-    text-align: center;
-    margin: auto;
-    cursor: pointer;
-  }
-  // 滑动验证码文字样式
-  span{
-    flex: 9;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    height: 40px;
-  }
-}
