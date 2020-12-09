@@ -24,6 +24,7 @@ export default {
           sliderBackground: "#54e346", // 滑块滑动时背景颜色
           sliderColor: "#fff", // 滑块颜色
           height: 40, // 高度默认40
+          width: 400, // 默认宽度
           color: "#fff", // 初始化的字体颜色
           backgroud: "#cfd3ce", // 背景颜色
           fontSize: 12, // 字体大小
@@ -57,14 +58,13 @@ export default {
       background = slider_background.value;
       // 4、获取文本dom元素 
       content = slider_content.value;
-      // 5、定义滑动的最大距离
-      distance = wrap.offsetWidth && slider.offsetWidth ? (wrap.offsetWidth - slider.offsetWidth) - options.height + 2 : 0;
       // 6、初始化
       // wrap.style.position = "relative";
       wrap.style.height = options.height + 'px';
       wrap.style.lineHeight = options.height + 'px';
       wrap.style.background = options.backgroud;
       wrap.style.fontSize = options.fontSize + 'px';
+      wrap.style.width = options.width + 'px';
 
       // 设置滑块的属性
       slider.style.background = options.sliderColor; // 滑块颜色
@@ -82,6 +82,9 @@ export default {
       // 设置滑块条背景
       background.style.transition = null;
       background.style.width = 0 + 'px';
+
+       // 5、定义滑动的最大距离
+      distance = wrap.offsetWidth && slider.offsetWidth ? (wrap.offsetWidth - slider.offsetWidth) + 2 : 0;
   
       slider.onmousedown = (event) => {
         // 获取按下时的 初始x 的值
@@ -117,7 +120,7 @@ export default {
 
             setTimeout(()=>{
               // 回调函数
-              emit("on-success", { "status": isSuccess })
+              emit("on-verify", isSuccess )
             },500);
           }
         }
@@ -156,6 +159,8 @@ export default {
   position: absolute;
   height: 100%;
   border-radius: 4px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, .29),2px 2px 2px
+        rgba(255, 255, 255, .44)  inset;
 }
 
 .slider_verify_code .content {
@@ -169,8 +174,11 @@ export default {
   position: absolute;
   text-align: center;
   color: #0a043c;
-  cursor: move;
+  cursor: pointer;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, .29),2px 2px 2px
+        rgba(255, 255, 255, .44)  inset;
 }
+
 </style>>

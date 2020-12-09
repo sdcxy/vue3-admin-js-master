@@ -1,22 +1,21 @@
 <template>
-   
-  <div class="picture_verify_code" 
+    <div class="picture_verify_code" 
     ref="slider_wrap" 
-  >
-    <div class="picture_wrap">
+    style="width:400px;height: 200px;"
+    >
+    <div class="picture_wrap" id="picture_wrap">
       <canvas canvas id="picture_canvas" class="picture_wrap_canvas"></canvas>
       <canvas id="picture_code" class="picture_wrap_code"></canvas>
+      <span id="text"> {{failureText}}</span>
     </div>
-    <div class="backgroud" ref="slider_background"></div>
     <div class="content" ref="slider_content"></div>
     <div class="icon" ref="slider_icon"></div>
-    
-  </div>
+    </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue"
-import { drawBlock, randomXY } from "./index"
+import { onMounted, ref, toRefs } from "vue"
+import { drawBlock, randomXY, randomNum } from "./index"
 export default {
   name: "PictureVerifyCode",
   props: {
@@ -25,15 +24,27 @@ export default {
       required: true,
       default: function(){
         return {
-          text: "请向右滑动验证",
-          successText: "验证成功", // 验证成功文字
-          sliderTextColor: "#54e346", // 滑块验证成功的文本颜色
-          sliderBackground: "#54e346", // 滑块滑动时背景颜色
-          sliderColor: "#fff", // 滑块颜色
+          expect: 2, // 期望的误差值,在0-3之间最好，不能设置太大
+          text: "按住滑块，拖动完成上方拼图",
+          failureText: "验证失败:拖动滑块将悬浮图像正确拼合", // 验证失败的文字
+          failureColor: "#c75643", // 验证失败的颜色
+          zIndex: "3000", // 失败文字高度
+          delay: 2000, // 失败文字延迟时间
+          sliderColor: "#1f6f8b", // 滑块颜色
           height: 40, // 高度默认40
           color: "#fff", // 初始化的字体颜色
-          backgroud: "#cfd3ce", // 背景颜色
-          fontSize: 12, // 字体大小
+          backgroud: "#214252", // 背景颜色
+          fontSize: 16, // 字体大小
+          imgHeight: "200",
+          imgWidth: "400",
+          imgs: [
+            require('@/assets/code/code1.png'),
+            require('@/assets/code/code2.png'),
+            require('@/assets/code/code3.png'),
+            require('@/assets/code/code4.png'),
+            require('@/assets/code/code5.png'),
+            require('@/assets/code/code6.png')
+          ],
         }
       }
     }
@@ -46,18 +57,22 @@ export default {
 
     const slider_icon = ref(null)
     const slider_wrap = ref(null)
-    const slider_background = ref(null)
     const slider_content = ref(null)
 
     let slider;
     let wrap;
-    let background;
     let content;
     let distance;
+    // 画布
+    let picture_wrap;
     let canvas;
     let code;
+    let text;
 
-    let xy = randomXY(400, 250);
+    const imgH = options.imgHeight;
+    const imgW = options.imgWidth
+
+    let xy = randomXY(imgW, imgH);
     
 
     const init = () => {
@@ -65,14 +80,11 @@ export default {
       slider = slider_icon.value;
       // 2、获取容器的dom元素
       wrap = slider_wrap.value;
-      // 3、获取div背景dom元素
-      background = slider_background.value;
-      // 4、获取文本dom元素 
+      // 3、获取文本dom元素 
       content = slider_content.value;
-      // 5、定义滑动的最大距离
+      // 4、定义滑动的最大距离
       distance = wrap.offsetWidth && slider.offsetWidth ? (wrap.offsetWidth - slider.offsetWidth) - options.height + 2 : 0;
-      // 6、初始化
-      // wrap.style.position = "relative";
+      // 5、初始化
       wrap.style.height = options.height + 'px';
       wrap.style.lineHeight = options.height + 'px';
       wrap.style.background = options.backgroud;
@@ -91,12 +103,57 @@ export default {
       content.style.color = options.color; // 文字颜色
       content.innerHTML = options.text // 文本
 
-      // 设置滑块条背景
-      background.style.transition = null;
-      background.style.width = 0 + 'px';
-
+      initDrawImg();
     }
 
+  
+    /**
+     * 初始化绘制图片和拼图块
+     */
+    const initDrawImg = () => {
+
+      picture_wrap = document.getElementById("picture_wrap");
+      canvas = document.getElementById("picture_canvas");
+      code = document.getElementById("picture_code");
+      text = document.getElementById("text");
+      // 初始化画布的大小
+      picture_wrap.height = imgH;
+      picture_wrap.width = imgW;
+      canvas.height = imgH;
+      canvas.width = imgW;
+      code.height = imgH;
+      code.width = imgW;
+      // 设置初始的位置
+      picture_wrap.style.top = -imgH - 20 + 'px';
+      text.style.bottom = - imgH -40 + 'px'
+      text.style.fontSize = options.fontSize;
+      text.style.color = options.color;
+      text.style.zIndex = -1;
+      // 准备绘制
+      const ctx = canvas.getContext("2d");
+      const ctx_code = code.getContext("2d")
+
+      // 待移动的拼图块，向左进行偏移
+      code.style.left =  - xy.x  + 'px'
+
+      // 随机生成一个数，随机生成图片
+      const index = randomNum(0, options.imgs.length)
+      let img = new Image();
+      img.src = options.imgs[index]
+      // 加载绘制图片
+      img.onload = () =>{
+        ctx.drawImage(img,0,0, imgW ,imgH)
+        ctx_code.drawImage(img, 0, 0 ,imgW, imgH)
+      }
+      // 绘制块
+      drawBlock(ctx, xy.x, xy.y, xy.y / 5, "fill")
+      drawBlock(ctx_code, xy.x, xy.y, xy.y / 5, "clip")
+    }
+
+
+    /**
+     * 初始化事件
+     */
     const initEvent = () => {
       slider.onmousedown = (event) => {
         // 获取按下时的 初始x 的值
@@ -117,77 +174,80 @@ export default {
           }
           // 根据鼠标移动的距离来动态设置滑块的偏移量和背景颜色的宽度
           slider.style.left = offsetX + 'px'
-          // background.style.width = offsetX + 'px';
-          // background.style.background = options.sliderBackground;
-      
-          code.style.left =  - xy.x + offsetX + 'px'
+          code.style.left =  - xy.x  +  offsetX + 'px'
 
-          // 如果鼠标的水平移动距离 = 滑动成功的宽度
-          if (offsetX === xy.x) {
-            // 1、设置滑动成功后的样式
-            content.innerHTML = options.successText // 成功文本
-            slider.style.color = options.sliderTextColor // 滑块文本颜色
-            slider.innerHTML = "✔" // 滑块图标
-            isSuccess = true;
-            // 2、成功后，清除掉鼠标按下事件和移动事件
-            slider.onmousedown = null;
-            document.onmousemove = null;
-
-            setTimeout(()=>{
-              // 回调函数
-              emit("on-success", { "status": isSuccess })
-            },500);
-          }
         }
         // 文档松开鼠标事件
-        document.onmouseup = () => {
-         // 如果鼠标松开时，滑到了终点，则验证通过
-          if (isSuccess) { return; }
-          // 反之，则将滑块复位（设置了1s的属性过渡效果）
-          slider.style.left = 0 + 'px';
-          background.style.width = 0 + 'px';
-          code.style.left = - xy.x + 'px';
-          // 只要鼠标松开了，说明此时不需要拖动滑块了，那么就清除鼠标移动和松开事件。
-          document.onmousemove = null;
-          // document.onmouseup = null;
+        document.onmouseup = (e) => {
+          // 获取鼠标松开时 x的值
+          const upClientX = e.clientX;
+          // 获取偏移量
+          const upOffsetX = upClientX - downX
+          if (upOffsetX === 0) {
+            return
+          }
+          // 允许在 +-2的误差内
+          if ( upOffsetX < xy.x + options.expect && upOffsetX > xy.x - options.expect) {
+            success();
+          } else {
+            failureTextDisplay();
+            reset();
+          }
         }
       }
     }
 
-    const drawImg = () => {
-
-      canvas = document.getElementById("picture_canvas");
-      code = document.getElementById("picture_code");
-      const ctx = canvas.getContext("2d");
-      const ctx_code = code.getContext("2d")
-
-      // canvas.style.top = - 220 + 'px'
-      // code.style.top = -220 + 'px';
-      code.style.left =  - xy.x - 50 + 'px'
-
-      let img = new Image();
-      img.src = require("../../assets/code/code3.png")
-
-      img.onload = () =>{
-        ctx.drawImage(img,0,0, 400 ,250)
-        ctx_code.drawImage(img, 0, 0 ,400, 250)
-      }
-      drawBlock(ctx, xy.x, xy.y, xy.y / 10, "fill")
-      drawBlock(ctx_code, xy.x, xy.y, xy.y / 10, "clip")
+    
+    /**
+     * 失败文字显示
+     */
+    const failureTextDisplay = () => {
+      // 显示文字
+      text.style.zIndex = options.zIndex;
+      text.style.color = options.failureColor;
+      text.style.bottom = -imgH + 'px';
+      text.style.background = "transparent";
+      setTimeout(()=> {
+        // 恢复原状
+        text.style.zIndex = -1;
+        text.style.color = options.color
+        text.style.buttom = -imgH - 40  + 'px';
+      },options.delay)
+    }
+    
+    /**
+     * 校验成功 返回状态
+     */
+    const success = () => {
+      emit("on-verify", !isSuccess )
+      document.onmousemove = null;
+      document.onmouseup = null;
+      slider.onmousedown = null;
+    }
+    /**
+     * 复位
+     */
+    const reset = () => {
+      // 立即复位
+      slider.style.left = 0 + 'px';
+      code.style.left = - xy.x + 'px';
+      emit("on-verify", isSuccess )
+      document.onmousemove = null;
+      document.onmouseup = null;
     }
 
     onMounted(()=>{
       init();
-      drawImg();
       initEvent();
-      
     })
+
+    const data = toRefs(options)
 
     return {
       slider_icon,
       slider_wrap,
       slider_content,
-      slider_background,
+      ...data
     }
   }
 }
@@ -212,28 +272,47 @@ export default {
   height: 100%;
   text-align: center;
   border-radius: 4px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, .29),2px 2px 2px
+        rgba(255, 255, 255, .44)  inset;
 }
 .picture_verify_code .icon {
   position: absolute;
   text-align: center;
-  color: #0a043c;
-  cursor: move;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.6);;
+  cursor: pointer;
+  border: 4px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  transition: box-shadow .2s ease-out;
+}
+
+.picture_verify_code .icon:active{
+  color: #fff;
+  border: 4px solid rgba(200, 200, 200, 0.8);
 }
 
 .picture_wrap{
   position: absolute;
   width: 100%;
-  top: -220px
+  border-radius: 4px;
+ 
 }
 
 .picture_wrap_canvas{
   position: absolute;
+  border-radius: 4px;
   width: 100%;
 }
 .picture_wrap_code{
   position: absolute;
+  border-radius: 4px;
   width: 100%;
+}
+
+.picture_wrap span{
+  display: block;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  z-index: -1;
 }
 </style>>

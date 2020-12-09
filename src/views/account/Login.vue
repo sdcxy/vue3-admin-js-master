@@ -21,51 +21,32 @@
           </el-input>
         </el-form-item>
         <!-- 登录验证码 -->
-        <el-form-item class="captcha_wrap">
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <el-input  type="text" autocomplete="off"></el-input>
-            </el-col>
-            <el-col :span="12">
-              <captcha :options="options"></captcha>
-            </el-col>
-          </el-row>
-        </el-form-item>
         <el-form-item>
-          <slider-verify-code @onSuccess="success" :options="sliderVerifyCodeOptions"></slider-verify-code>
+          <slider-verify-code @onVerify="success" :options="sliderVerifyCodeOptions"></slider-verify-code>
         </el-form-item>
          <!-- 登录按钮 -->
         <el-form-item>
           <el-button type="primary">登录</el-button>
         </el-form-item>
       </el-form>
-      <picture-verify-code></picture-verify-code>
     </div>
   </div>
 </template>
 <script>
-import Captcha from "../../components/Captcha/Captcha.vue";
 import SliderVerifyCode from '../../components/SliderVerifyCode/SliderVerifyCode.vue'
 import { reactive, toRefs } from "vue";
-import PictureVerifyCode from '../../components/PictureVerifyCode/PictureVerifyCode.vue';
 export default {
   name: "Login",
   components: {
-    Captcha, SliderVerifyCode,
-    PictureVerifyCode
+    // Captcha, 
+    SliderVerifyCode,
+    // PictureVerifyCode
   },
   setup() {
     const dataForm = reactive({
       loginForm: {
         username: "",
         password: ""
-      },
-      options: {
-        code: "u4N5L3",
-        width: 100,
-        height: 40,
-        line: 70,
-        point: 1000
       },
       sliderVerifyCodeOptions: {
         text: "请向右滑动验证",
