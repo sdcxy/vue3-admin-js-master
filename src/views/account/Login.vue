@@ -31,23 +31,28 @@
             </el-col>
           </el-row>
         </el-form-item>
+        <el-form-item>
+          <slider-verify-code @onSuccess="success" :options="sliderVerifyCodeOptions"></slider-verify-code>
+        </el-form-item>
          <!-- 登录按钮 -->
         <el-form-item>
           <el-button type="primary">登录</el-button>
         </el-form-item>
       </el-form>
-      <swipe-verify-code></swipe-verify-code>
+      <picture-verify-code></picture-verify-code>
     </div>
   </div>
 </template>
 <script>
 import Captcha from "../../components/Captcha/Captcha.vue";
-import SwipeVerifyCode from '../../components/SwipeVerifyCode/SwipeVerifyCode.vue'
+import SliderVerifyCode from '../../components/SliderVerifyCode/SliderVerifyCode.vue'
 import { reactive, toRefs } from "vue";
+import PictureVerifyCode from '../../components/PictureVerifyCode/PictureVerifyCode.vue';
 export default {
   name: "Login",
   components: {
-    Captcha, SwipeVerifyCode
+    Captcha, SliderVerifyCode,
+    PictureVerifyCode
   },
   setup() {
     const dataForm = reactive({
@@ -61,11 +66,26 @@ export default {
         height: 40,
         line: 70,
         point: 1000
+      },
+      sliderVerifyCodeOptions: {
+        text: "请向右滑动验证",
+        successText: "验证成功", // 验证成功文字
+        sliderTextColor: "#54e346", // 滑块验证成功的文本颜色
+        sliderBackground: "#54e346", // 滑块滑动时背景颜色
+        sliderColor: "#fff", // 滑块颜色
+        height: 40, // 高度默认40
+        color: "#fff", // 初始化的字体颜色
+        backgroud: "#cfd3ce", // 背景颜色
+        fontSize: 12, // 字体大小
       }
     });
+    const success = (e) => {
+      console.log(e);
+    }
     const data = toRefs(dataForm);
     return {
-      ...data
+      ...data,
+      success
     };
   }
 };
