@@ -1,0 +1,34 @@
+// 定义颜色
+
+// 主要颜色
+.v-primary {
+  color: #409EFF !important;
+}
+// 警告颜色
+.v-warring {
+  color: #E6A23C !important;
+}
+
+// 成功
+.v-success {
+  color: #67C23A !important;
+}
+
+// 危险颜色
+.v-danger {
+  color: #f78989 !important;
+}
+// 默认颜色
+.v-default {
+  color: #fff !important;
+}
+
+// 纯黑色
+.v-black{
+  color: #000 !important;
+}
+
+.v-hover:hover {
+  cursor: pointer;
+  color: #409EFF !important;
+}

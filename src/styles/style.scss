@@ -1,1 +1,18 @@
 @import './normalize.scss';
+@import './color.scss';
+@import './font.scss';
+
+// icon 的样式
+.v-icon {
+  color: #bbbbbb !important;
+  font-size: 20px !important;
+} 
+
+
+.v-fill-width {
+  width: 100% !important;
+}
+
+.v-fill-height {
+  height: 100% !important;
+}

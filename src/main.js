@@ -6,7 +6,15 @@ import store from "./store";
 import ElementPlus from 'element-plus';
 import 'element-plus/lib/theme-chalk/index.css';
 
-createApp(App)
+// 引入icons
+import { registerGlobalSvgIconComponent } from  "./assets/icons"; // icon
+
+const app = createApp(App);
+
+// 注册SvgIcon全局组件
+registerGlobalSvgIconComponent(app);
+
+app
   .use(store)
   .use(router)
   .use(ElementPlus)
