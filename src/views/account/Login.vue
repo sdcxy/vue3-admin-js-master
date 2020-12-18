@@ -42,12 +42,9 @@
             </template>
           </slider-verify-code>
         </el-form-item>
-        <el-form-item>
-          <sms-verify-code></sms-verify-code>
-        </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button type="success">登录</el-button>
+          <el-button type="success" @click="router.push('/home')">登录</el-button>
         </el-form-item>
         <el-form-item class="forget_wrap">
           <span class="v-mini v-default v-hover" @click="router.push('/forget')">忘记密码</span>
@@ -60,14 +57,10 @@
 import SliderVerifyCode from "../../components/SliderVerifyCode/SliderVerifyCode.vue";
 import { reactive, toRefs } from "vue";
 import { useRouter  } from "vue-router";
-import SvgIcon from '../../components/Icons/SvgIcon.vue';
-import SmsVerifyCode from '../../components/SmsVerifyCode/SmsVerifyCode.vue';
 export default {
   name: "Login",
   components: {
-    SliderVerifyCode,
-    SvgIcon,
-    SmsVerifyCode
+    SliderVerifyCode
   },
   setup() {
     const dataForm = reactive({
