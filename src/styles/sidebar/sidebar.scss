@@ -48,12 +48,21 @@
       .el-menu {
         border: none;
 
+        .is-active {
+          background-color: $menuBackgroud !important;
+        }
+
         & .el-menu-item {
 
-
           & .svg-icon {
-            margin-right: 16px;
+            margin-right: 20px;
           }
+        }
+      }
+
+      .el-menu .el-menu-item {
+        &:hover, &:focus {
+          background-color: $menuHover !important;
         }
       }
 
@@ -62,7 +71,7 @@
         & .el-submenu__title {
 
           & .svg-icon {
-            margin-right: 16px;
+            margin-right: 20px;
           }
         }
       }
@@ -81,6 +90,41 @@
       margin-left: 54px;
     }
 
+    .submenu-title-noDropdown {
+      padding: 0 !important;
+      position: relative;
+
+      .el-tooltip {
+        .svg-icon {
+          margin-left: 20px;
+        }
+      }
+    }
+
+    .el-submenu {
+      overflow: hidden;
+
+      & > .el-submenu__title {
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+      }
+    }
+
+    .el-menu--collapse {
+      width: 54px !important;
+      .el-submenu {
+        & > .el-submenu__title {
+          & > span {
+            height: 0;
+            width: 0;
+            overflow: hidden;
+            visibility: hidden;
+            display: inline-block;
+          }
+        }
+      }
+    }
 
   }
 }

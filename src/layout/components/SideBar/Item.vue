@@ -11,12 +11,6 @@ export default {
   props: {
     icon: String,
     title: String
-  },
-  setup() {
-
-    return {
-
-    }
   }
 }
 </script>

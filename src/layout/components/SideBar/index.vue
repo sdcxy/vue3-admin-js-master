@@ -27,7 +27,6 @@ import SideBarLogo from "./Logo"
 import { computed, reactive, toRefs } from 'vue'
 import { useRoute } from "vue-router";
 import { useStore } from  "@/store/modules/layout/store";
-import { menus } from "./index"
 const sideBarColor = require("@/styles/sidebar/variables.scss");
 
 export default {
@@ -41,7 +40,7 @@ export default {
     const store = useStore();
     // 定义响应式对象
     const data = toRefs(reactive({
-      menus: menus, // 对应的侧边栏菜单数组
+      menus: computed(()=>store.state.menus), // 对应的侧边栏菜单数组
       activeMenu: computed(()=>route.fullPath), // 用计算机属性监测路由当前fullPath的变化
       isCollapse: computed(()=>store.state.collapse),  // 是否折叠菜单
       showLogo: computed(()=>store.state.showLogo), // 是否显示图标

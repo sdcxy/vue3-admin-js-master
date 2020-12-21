@@ -1,7 +1,7 @@
 export const menus = [
   {
-    path: "/login2",
-    name: "Layout2",
+    path: "foeget",
+    name: "Forget",
     meta: {
       icon: 'account',
       title: '基础管理'
@@ -10,7 +10,7 @@ export const menus = [
     children: []
   },
   {
-    path: "/login",
+    path: "login",
     name: "Login",
     meta: {
       icon: 'password',
@@ -19,8 +19,8 @@ export const menus = [
     hidden: false,
     children: [
       {
-        path: "/forget",
-        name: "Forget",
+        path: "home",
+        name: "Home",
         meta: {
           icon: 'slider',
           title: '人员管理'
