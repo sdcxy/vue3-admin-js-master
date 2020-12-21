@@ -1,0 +1,24 @@
+/**
+在这里定义自定义主题颜色，覆盖
+element-ui/packages/theme-chalk/src/common/var.scss中的颜色。
+**/
+
+$--color-primary: #008080 !default;
+$--color-success: #67c23a !default;
+$--color-warning: #e6a23c !default;
+$--color-danger: #f56c6c !default;
+$--color-info: #909399 !default;
+
+// icon的文字路径
+$--font-path: '~element-plus/lib/theme-chalk/fonts';
+
+@import "~element-plus/packages/theme-chalk/src/index";
+
+:export {
+  theme: $--color-primary;
+  primary: $--color-primary;
+  success: $--color-success;
+  warning: $--color-warning;
+  danger:  $--color-danger;
+  info: $--color-info;
+}

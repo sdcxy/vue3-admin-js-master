@@ -1,6 +1,14 @@
 @import './normalize.scss';
+@import './transition.scss';
 @import './color.scss';
 @import './font.scss';
+@import './element/element.scss'; // element样式修改
+@import'./element//element-variables.scss';
+
+// sidebar
+@import './sidebar/variables.scss';
+@import './sidebar//sidebar.scss';
+
 
 // icon 的样式
 .v-icon {
@@ -16,3 +24,6 @@
 .v-fill-height {
   height: 100% !important;
 }
+
+
+// ---nav-bar

@@ -1,0 +1,91 @@
+
+#app {
+  // 右边主容器内容
+  .main-container {
+    min-height: 100%;
+    transition: margin-left .28s;
+    margin-left: $sideBarWidth; //向左侧边栏宽度
+    position: relative;
+  }
+
+  // 侧边栏样式
+  .side-container{
+    width: $sideBarWidth !important;
+    background-color: $menuBackgroud;
+    transition: width 0.28s;
+    position: fixed;
+    font-size: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    overflow: hidden;
+    height: 100%;
+    
+    
+    // 侧边栏滚动条高度
+    .el-scrollbar {
+      height: 100%;
+
+      // 侧边栏滚动条
+      .scrollbar-wrapper{
+        overflow-x: hidden !important;
+      }
+
+      // 侧边栏滚动条 水平平铺样式
+      .el-scrollbar__bar .is-vertical{
+        right: 0;
+      }
+
+        // 侧边栏滚动条 垂直样式
+      .is-horizontal {
+        display: none;
+        height: 100%;
+        width: 100% !important;
+      }
+
+      // 菜单样式调整
+      .el-menu {
+        border: none;
+
+        & .el-menu-item {
+
+
+          & .svg-icon {
+            margin-right: 16px;
+          }
+        }
+      }
+
+      .el-submenu {
+
+        & .el-submenu__title {
+
+          & .svg-icon {
+            margin-right: 16px;
+          }
+        }
+      }
+    }
+  }
+
+
+  // 折叠后的宽度
+  .collapseSideBar{
+    
+    .side-container {
+      width: 54px !important;
+    }
+
+    .main-container {
+      margin-left: 54px;
+    }
+
+
+  }
+}
+
+
+
+
+

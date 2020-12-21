@@ -2,22 +2,27 @@
 
 // 主要颜色
 .v-primary {
-  color: #409EFF !important;
+  color: #008080 !important;
 }
 // 警告颜色
 .v-warring {
-  color: #E6A23C !important;
+  color: #e6a23c !important;
 }
 
 // 成功
 .v-success {
-  color: #67C23A !important;
+  color: #67c23a !important;
 }
 
 // 危险颜色
 .v-danger {
-  color: #f78989 !important;
+  color: #f56c6c !important;
 }
+
+.v-info {
+  color: #909399 !important;
+}
+
 // 默认颜色
 .v-default {
   color: #fff !important;

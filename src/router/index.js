@@ -2,11 +2,15 @@ import {
   createRouter,
   createWebHashHistory
 } from "vue-router";
+
+import Layout from "@/layout/index.vue"
+import { defineAsyncComponent } from "vue";
+
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "Login",
-    component: () => import("@/views/account/Login.vue")
+    component: defineAsyncComponent(() => import("@/views/account/Login.vue"))
   },
   {
     path: "/forget",
@@ -14,9 +18,16 @@ const routes = [
     component: () => import("@/views/account/Forget.vue")
   },
   {
-    path: "/home",
-    name: "Home",
-    component: () => import("@/views/home/Home.vue")
+    path: "/",
+    name: "Layout",
+    component: Layout,
+    children: [
+      {
+        path: "home",
+        name: "Home",
+        component: () => import("@/views/home/Home.vue")
+      },
+    ]
   }
 ];
 
